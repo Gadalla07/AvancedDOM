@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interazioni con JavaScript</title>
+    <style>
+    ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 5px;
+        }
+        .red {
+            color: red;
+        }
+        .evidenziatore {
+            background-color: yellow;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+        }
+        .image-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .image-container img {
+            width: 200px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p>
+            <button id="bottone1">https://www.youtube.com</button>
+            <span id="linkContainer"></span>
+        </p>
+
+        <ul id="Lista">
+            <li>Pizza</li>
+            <li>Kebab</li>
+            <li>Carbonara</li>
+        </ul>
+        
+        <button id="bottone2">Rosso</button>
+        
+		<input type="text" id="newItemText" placeholder="Inserisci un elemento">
+        
+        <button id="bottone3">Aggiungi</button>
+        
+        <button id="bottone4">Evidenzia</button>
+        
+        <button id="bottone5">Ordina</button>
+        
+        <button id="bottone6">JavaScript</button>
+    </div>
+    <div class="image-container">
+        <img id="img1" class="clickable" src="pizza-napoli.jpg" alt="Immagine sinistra">
+        <button id="btn7" class="swap-button">Scambia</button>
+        <img id="img2" class="clickable" src="doner-kebab.jpg" alt="Immagine destra">
+    </div>
+
+
+
+    <script>
+    
+    
+    let list = document.getElementById("Lista");
+    
+        document.getElementById("bottone1").addEventListener("click", function() {
+            let linkContainer = document.getElementById("linkContainer");
+            if (!document.getElementById("dynamicLink")) {
+                let link = document.createElement("a");
+                link.id = "dynamicLink";
+                link.href = "https://www.youtube.com";
+                link.textContent = "https://www.youtube.com";
+                linkContainer.appendChild(link);
+            }
+        });
+        
+        document.getElementById("bottone2").addEventListener("click", function() {
+            let items = document.getElementById("Lista").children;
+            for (let item of items) {
+                item.classList.add("red");
+            }
+        });
+        
+        document.getElementById("bottone3").addEventListener("click", function() {
+            let text = document.getElementById("newItemText").value;
+            if (text.trim() !== "") {
+                let li = document.createElement("li");
+                li.textContent = text;
+                document.getElementById("Lista").appendChild(li);
+                document.getElementById("newItemText").value = "";
+            }
+        });
+        
+        document.getElementById("bottone4").addEventListener("click", function() {
+            if (list.children.length > 0) {
+                list.firstElementChild.classList.add("evidenziatore");
+                list.lastElementChild.classList.add("evidenziatore");
+            }
+        });
+        
+        document.getElementById("bottone5").addEventListener("click", function() {
+            let itemsArray = Array.from(list.children);
+            itemsArray.sort((a, b) => a.textContent.localeCompare(b.textContent));
+            list.innerHTML = "";
+            itemsArray.forEach(item => list.appendChild(item));
+        });
+        
+        document.getElementById("bottone6").addEventListener("click", function() {
+            let count = list.children.length;
+            list.innerHTML = "";
+            for (let i = 0; i < count; i++) {
+                let li = document.createElement("li");
+                li.textContent = "Che bello Javascript!";
+                list.appendChild(li);
+            }
+        });
+        
+        document.getElementById("btn7").addEventListener("click", function() {
+            let img1 = document.getElementById("img1");
+            let img2 = document.getElementById("img2");
+            
+            let scambio = img1.src;
+            let tempClass = img1.className;
+            img1.src = img2.src;
+            img1.className = img2.className;
+            img2.src = scambio;
+            img2.className = tempClass;
+        });
+
+        document.querySelectorAll(".image-container img").forEach(img => {
+            img.addEventListener("click", function() {
+                this.classList.add("disabled");
+            });
+        });
+    </script>
+</body>
+</html>
